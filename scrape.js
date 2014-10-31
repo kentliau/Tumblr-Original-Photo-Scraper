@@ -19,8 +19,8 @@ function iteratePages(err, res) {
     var countOC = 0;
 
     function generatePageRequest(count) {
+        var offset = count * 20;
         return function(cb) {
-            var offset = count * 20;
             request(url + '&offset=' + offset, handlePage(count, totalPages, cb));
         }
     }
