@@ -14,8 +14,11 @@ if (!blogUrl) {
 var matchCount = 0;
 
 try {
-    fs.mkdirSync(__dirname + '/img/');
-    fs.mkdirSync(__dirname + '/img/' + blogUrl + '/');
+  fs.mkdirSync(__dirname + '/img/');
+} catch (e) {}
+
+try {
+  fs.mkdirSync(__dirname + '/img/' + blogUrl + '/');
 } catch (e) {}
 
 function getTotalPostCount(callback) {
@@ -58,28 +61,34 @@ function handlePage(page, pageCount, callback) {
   return function(error, response, body) {
     if (!error && response.statusCode == 200) {
       var blog = JSON.parse(body);
-      async.mapSeries(blog.response.posts, function(post, callback) {
-        if (post.reblogged_from_id) {
-          // not original post
-          return callback(null);
-        }
-        post.photos.forEach(function(photo) {
-          var fsPath = __dirname + '/img/' + blogUrl + '/';
-          var photoName = path.basename(photo.original_size.url);
-          var writer = fs.createWriteStream(fsPath + photoName);
-          writer.on('finish', function() {
-            matchCount++;
-            console.log('Done loading ' + photoName);
-            callback(null);
-          });
-          request(photo.original_size.url).pipe(writer);
-        });
-      }, function() {
+      async.eachSeries(blog.response.posts, handlePost, function() {
         console.log('Done page %d/%d', page, pageCount);
         callback(null);
       });
+    } else {
+      callback(error);
     }
   };
+}
+
+function handlePost(post, callback) {
+  if (post.reblogged_from_id) {
+    // not original post
+    return callback(null);
+  }  
+  async.each(post.photos, function(photo, callback) {
+    var fsPath = __dirname + '/img/' + blogUrl + '/';
+    var photoName = path.basename(photo.original_size.url);
+    var writer = fs.createWriteStream(fsPath + photoName);
+    writer.on('finish', function() {
+      matchCount++;
+      console.log('Done loading ' + photoName);
+      callback(null);
+    });
+    request(photo.original_size.url).pipe(writer);
+  }, function() {
+    callback(null);
+  });
 }
 
 // main
