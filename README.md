@@ -1,8 +1,8 @@
-Tumblr OC Scraper
+# Tumblr Original Photo Scraper
 
-Download own image posts from Tumblr.
+Simple script to download original photos from a Tumblr blog.
 
 Usage
-node scrape.js url limit
+`> node index.js url [limit]`
 - url: tumblr url
-- maximum pararell requests to parse a page
+- limit: maximum pararell requests to parse a page

@@ -1,10 +1,10 @@
 {
-  "name": "Tumblr-OC-Scraper",
+  "name": "Tumblr-Original-Photo-Scraper",
   "version": "1.0.0",
-  "description": "Script to download a blog's original images from Tumblr",
-  "main": "scrape.js",
+  "description": "Simple script to download original photos from a Tumblr blog.",
+  "main": "index.js",
   "dependencies": {
-    "async": "^0.1.22",
+    "async": "0.9.0",
     "fs": "0.0.2",
     "path": "^0.4.9",
     "request": "^2.47.0"
@@ -13,17 +13,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/CAPSLOCKUSER/Tumblr-OC-Scraper.git"
-  },
   "keywords": [
     "tumblr"
   ],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CAPSLOCKUSER/Tumblr-OC-Scraper/issues"
-  },
-  "homepage": "https://github.com/CAPSLOCKUSER/Tumblr-OC-Scraper"
+  "license": "ISC"
 }
