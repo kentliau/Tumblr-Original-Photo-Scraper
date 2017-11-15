@@ -1,6 +1,6 @@
 # Tumblr Original Photo Scraper
 
-Simple script to download original photos and reblogged photos from a Tumblr blog.
+Simple script to download original photos and reblogged photos from a Tumblr blog, it skip already downloadeded file, no big harm of rerun the script, it just not efficient.
 
 Usage
 `> node index.js url [limit]`
