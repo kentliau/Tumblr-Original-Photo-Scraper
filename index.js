@@ -25,7 +25,7 @@ function getTotalPostCount(callback) {
   request(url, function (error, response, body) {
     if (error)
       throw error;
-      
+
     var data = JSON.parse(body).response;
 
     callback(null, data.total_posts);
@@ -35,7 +35,7 @@ function getTotalPostCount(callback) {
 function iteratePages(error, totalPostCount) {
   var pageCount = Math.ceil(totalPostCount / 20);
   var allPages = [];
-  
+
   function generatePageRequest(count) {
     var offset = count * 20;
     return function(callback) {
@@ -46,7 +46,7 @@ function iteratePages(error, totalPostCount) {
   for (var i = 0; i < pageCount; i++) {
     allPages.push( generatePageRequest(i) );
   }
-  
+
   async.parallelLimit(allPages, limit, function(error) {
     if (error)
       throw error;
@@ -72,12 +72,20 @@ function handlePage(page, pageCount, callback) {
 }
 
 function handlePost(post, callback) {
+
   if (post.reblogged_from_id) {
     // not original post
-    return callback(null);
-  }  
+    blogName = post.reblogged_root_name;
+    try {
+      fs.mkdirSync(__dirname + '/img/' + blogName + '/');
+    } catch (e) {}
+
+  } else {
+    blogName = blogUrl;
+  }
+
   async.each(post.photos, function(photo, callback) {
-    var fsPath = __dirname + '/img/' + blogUrl + '/';
+    var fsPath = __dirname + '/img/' + blogName + '/';
     var photoName = path.basename(photo.original_size.url);
     var writer = fs.createWriteStream(fsPath + photoName);
     writer.on('finish', function() {
