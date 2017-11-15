@@ -87,10 +87,16 @@ function handlePost(post, callback) {
   async.each(post.photos, function(photo, callback) {
     var fsPath = __dirname + '/img/' + blogName + '/';
     var photoName = path.basename(photo.original_size.url);
+
+    if (fs.existsSync(fsPath + photoName)) {
+      console.log('Already downloaded ' + blogName + '/' + photoName);
+      return callback(null)
+    }
+
     var writer = fs.createWriteStream(fsPath + photoName);
     writer.on('finish', function() {
       matchCount++;
-      console.log('Done loading ' + photoName);
+      console.log('Done loading ' + blogName + '/' + photoName);
       callback(null);
     });
     request(photo.original_size.url).pipe(writer);
