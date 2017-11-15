@@ -5,4 +5,4 @@ Simple script to download original photos and reblogged photos from a Tumblr blo
 Usage
 `> node index.js url [limit]`
 - url: tumblr url, just the subdomain part like `shylittlebaby` from `shylittlebaby.tumblr.com`
-- limit: maximum parallel requests to parse a page, default to `1`
+- limit: maximum parallel requests to parse a page, default to `1`, go slow, tumblr has limit
